@@ -12,4 +12,8 @@ public class SceneHandler : MonoBehaviour
         //if(!sceneName.IsValid()) return;
         SceneManager.LoadScene(nameToScene);
     }
+    public void RestartScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 }

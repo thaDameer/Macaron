@@ -13,17 +13,21 @@ public enum CameraMode
 
 public class CameraManager : MonoBehaviour
 {
-    private CameraMode camMode;
+    public CameraMode camMode;
     public float cameraSmoothSpeed = 5;
     Vector3 followPos;
     public Camera mainCamera;
     bool isFollowing = false;
     public Vector3 offset = new Vector3(0,0,10);
+    protected Vector3 startPos;
     public Transform currentFollowObject;
     public float shakeTime;
     float shakeCounter;
     
-    // Update is called once per frame
+    private void Start() 
+    {
+        startPos = transform.position;
+    }
     void FixedUpdate()
     {
         if(currentFollowObject == null) return; 
@@ -65,6 +69,21 @@ public class CameraManager : MonoBehaviour
 
         camMode = mode;
         currentFollowObject = newObject;
+    }
+    float timer;
+    public float duration = 1f;
+    public IEnumerator ReturnToStartPosition()
+    {
+        camMode = CameraMode.RETURNING;
+        Vector3 fromPos = transform.position;
+        while(timer<duration)
+        {
+            
+            transform.position = Vector3.Lerp(fromPos, startPos, (timer/duration));
+            timer+=Time.deltaTime;
+            yield return null;
+        }
+        GameManager.instance.sGamePlaying.OnEnterState();
     }
 
     [SerializeField]

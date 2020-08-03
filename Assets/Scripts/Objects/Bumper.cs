@@ -8,7 +8,8 @@ public class Bumper : MonoBehaviour
     public float bumpForce = 200f;
     public float maxForce = 1000;
     bool canBump = true;
-    public ParticleSystem party;
+    public GameObject party;
+    
     private void OnTriggerEnter(Collider other) 
     {
         // Debug.Log(other.gameObject.name);
@@ -36,8 +37,11 @@ public class Bumper : MonoBehaviour
 
     private void Bounce (Vector3 collisionNormal, Player p)
     {
+        //Start party effect
+        timer = 0;
+        StartCoroutine(BumpParty_CO());
         animator.SetTrigger("Bump");
-        party.Emit(20);
+        party.SetActive(true);
         var dir = Vector3.Reflect(p.playerRb.velocity.normalized,collisionNormal);
         Debug.Log("out direction "+ dir);
         dir.y = collisionNormal.y;
@@ -53,6 +57,16 @@ public class Bumper : MonoBehaviour
 
         Debug.Log("player velocity "+ p.playerRb.velocity.magnitude);
         Debug.Log("player  angVelocity"+ p.playerRb.angularVelocity);
+    }
+    float timer;
+    private IEnumerator BumpParty_CO()
+    {
+        while(timer < 0.5)
+        {
+            timer += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+        party.SetActive(false);
     }
     public void ResetBump_AE()
     {

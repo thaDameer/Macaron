@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using States;
 
-public class GameLost : State
+public class GameMissedShot : State
 {
     GameManager gm;
-    public GameLost(GameManager actor) : base(actor)
+    Coroutine cameraCR;
+    public GameMissedShot(GameManager actor) : base(actor)
     {
-        gm = actor;
+        gm=actor;
     }
     public override void OnEnterState()
     {
         base.OnEnterState();
-        gm.uiManager.lostScreen.Show();
+        StartStateCoroutine(gm.cameraManager.ReturnToStartPosition());
     }
     public override void OnExitState()
     {
@@ -22,9 +23,6 @@ public class GameLost : State
     public override void Update()
     {
         base.Update();
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            gm.sceneHandler.RestartScene();
-        }
+
     }
 }

@@ -6,10 +6,14 @@ public class StageHandler : MonoBehaviour
 {
     public CameraMode CAMERA_MODE;
   
+    public Transform deadzoneParent;
     public Transform startPosition;
     public GoalScript goalPosition;
+    [HideInInspector]
+    public DeadZone upDeadzone,leftDeadzone,rightDeadzone;
     private Player ballPrefab;
     private List<Player> listOfBalls = new List<Player>();
+    private Player activeBall;
     public int amountOfBalls = 3;
     int currentBall = 0;
     public int levelId;
@@ -30,23 +34,20 @@ public class StageHandler : MonoBehaviour
             listOfBalls.Add(ballClone);
             ballClone.gameObject.SetActive(false);
         }
-        listOfBalls[currentBall].gameObject.SetActive(true);
-        GameManager.instance.cameraManager.UpdateObjectToFollowAndMode(listOfBalls[currentBall].transform, CAMERA_MODE);
-        //set active ball
-        UpdateActiveBall();
-        
+        HideDeadZones();
     }
 
+  
     private void Update() 
     {
-        if(Input.GetKeyDown(KeyCode.R))
+        if(Input.GetKeyDown(KeyCode.R) && activeBall && currentBall < listOfBalls.Count)
         {
-            listOfBalls[currentBall].sPlayerDead.OnEnterState();
+            activeBall.sPlayerDead.OnEnterState();
             //SpawnANewBall();
         }     
     }
 
-    public void UpdateActiveBall()
+    public void SetActiveBallPos()
     {
         //set the ball position to the start position
         listOfBalls[currentBall].transform.position = startPosition.position;
@@ -55,11 +56,12 @@ public class StageHandler : MonoBehaviour
 
     public void SpawnANewBall()
     {
+        activeBall = listOfBalls[currentBall];
+        activeBall.gameObject.SetActive(true);
+        activeBall.isAlive = true;        
+        GameManager.instance.cameraManager.UpdateObjectToFollowAndMode(activeBall.transform, CAMERA_MODE);
+        SetActiveBallPos();
         currentBall++;
-        if(currentBall >= listOfBalls.Count)return;
-        listOfBalls[currentBall].gameObject.SetActive(true);
-        GameManager.instance.cameraManager.UpdateObjectToFollowAndMode(listOfBalls[currentBall].transform, CAMERA_MODE);
-        UpdateActiveBall();
     }
     public void LevelIsFinished()
     {
@@ -71,6 +73,7 @@ public class StageHandler : MonoBehaviour
     #region  Editor
     public void CreatePositionObjects(string whatObject)
     {
+        
         switch(whatObject)
         {
             case "start":
@@ -86,7 +89,36 @@ public class StageHandler : MonoBehaviour
             break;
         }
     }
+    public void CreateDeadZones(ObjectRotation rotation)
+    {
+        if(!deadzoneParent) {Debug.Log("Add deadzone parent to stage handler in inspector"); return;}
+        
+        var obj = Instantiate(Resources.Load<DeadZone>("DeadZone"),deadzoneParent);
+        obj.SetRotation(rotation);
+        switch(rotation)
+        {
+            case ObjectRotation.LEFT:
+                leftDeadzone = obj;
+                leftDeadzone.name = "left deadzone";
+                break;
+            case ObjectRotation.RIGHT:
+                rightDeadzone = obj;
+                rightDeadzone.name ="right deadzone";
+                break;
+            case ObjectRotation.UP:
+                upDeadzone = obj;
+                upDeadzone.name = "up deadzone";
+                break;
+        }
+    }
     
+    public void HideDeadZones()
+    {
+        leftDeadzone.HideMesh();
+        rightDeadzone.HideMesh();
+        upDeadzone.HideMesh();
+    }
+
     #endregion
 }
 

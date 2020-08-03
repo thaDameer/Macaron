@@ -12,7 +12,7 @@ using UnityEditor;
             var levelHandler = (StageHandler)target;
             
             GUILayout.BeginHorizontal();
-            if(GUILayout.Button("Generate startpos",GUILayout.Width(150),GUILayout.Height(50)))
+            if(GUILayout.Button("Create startpos",GUILayout.Width(100),GUILayout.Height(50)))
             {
                 if(levelHandler.startPosition)
                 {
@@ -24,7 +24,7 @@ using UnityEditor;
                     levelHandler.CreatePositionObjects("start");
                 }
             }
-             if(GUILayout.Button("Generate goalpos",GUILayout.Width(150),GUILayout.Height(50)))
+             if(GUILayout.Button("Create goalpos",GUILayout.Width(100),GUILayout.Height(50)))
             {
                 if(levelHandler.goalPosition)
                 {
@@ -34,6 +34,41 @@ using UnityEditor;
                 {
                     levelHandler.CreatePositionObjects("goal");
                     Debug.Log("Created a start goal");
+                }
+            }
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+           if(GUILayout.Button("LeftDeadZone",GUILayout.Width(100),GUILayout.Height(50)))
+            {
+                if(levelHandler.leftDeadzone)
+                {
+                    Debug.Log("Deadzone already set");
+                }
+                else
+                {
+                    levelHandler.CreateDeadZones(ObjectRotation.LEFT);
+                }
+            }
+             if(GUILayout.Button("RightDeadZone",GUILayout.Width(100),GUILayout.Height(50)))
+            {
+                if(levelHandler.rightDeadzone)
+                {
+                    Debug.Log("Deadzone already set");
+                }
+                else
+                {
+                    levelHandler.CreateDeadZones(ObjectRotation.RIGHT);
+                }
+            }
+            if(GUILayout.Button("UpDeadZone",GUILayout.Width(100),GUILayout.Height(50)))
+            {
+                if(levelHandler.upDeadzone)
+                {
+                    Debug.Log("Deadzone already set");
+                }
+                else
+                {
+                    levelHandler.CreateDeadZones(ObjectRotation.UP);
                 }
             }
             GUILayout.EndHorizontal();

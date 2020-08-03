@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Player : Actor
 {
-   bool isDead = false;
+   public bool isAlive = false;
    [SerializeField]
    public float pathPosition;
 
@@ -47,7 +47,7 @@ public class Player : Actor
 
    public override void Update()
    {
-      if(isDead) return;
+      if(!isAlive) return;
       base.Update();
       movementInput = new Vector2(Input.GetAxisRaw("Horizontal"),0);
    }
@@ -79,5 +79,13 @@ public class Player : Actor
       {
          return false;
       } 
+   }
+   private void OnTriggerEnter(Collider other) 
+   {
+      var deadzone = other.GetComponentInParent<DeadZone>();
+      if(deadzone && isAlive)
+      {
+         sPlayerDead.OnEnterState();
+      }   
    }
 }

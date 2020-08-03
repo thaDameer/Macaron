@@ -17,6 +17,7 @@ public class PlayerDead : State
         base.OnEnterState();
         player.ballObject.layer = 0;
         counter = delayTime;
+        player.isAlive = false;
         StartStateCoroutine(DelayDeath());
     }
     IEnumerator DelayDeath()
@@ -26,7 +27,8 @@ public class PlayerDead : State
             counter -= Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
-        GameManager.instance.levelHandler.SpawnANewBall();
+
+        GameManager.instance.CurrentBallDied();
 
     }
 }

@@ -15,6 +15,7 @@ public static class AnimID
         scaleUp = StringToHash("scaleUp"),
         scaleDown = StringToHash("scaleDown"),
         bump = StringToHash("bump"),
+        pulse = StringToHash("pulse"),
         landing = StringToHash("landing"),
         idle = StringToHash("idle"),
         stretch = StringToHash("stretch");
