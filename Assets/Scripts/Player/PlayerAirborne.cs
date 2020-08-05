@@ -22,7 +22,7 @@ public class PlayerAirborne : State
         //player.animator.SetTrigger(AnimID.landing);
     }
 
-    float flipSpeed = 5;
+    
     public override void Update()
     {
         base.Update();
@@ -30,15 +30,31 @@ public class PlayerAirborne : State
         {
             player.previousState.OnEnterState();
         }
-        float sideMove = Input.GetAxisRaw("Horizontal") * flipSpeed;
-        float verticalMove = Input.GetAxisRaw("Vertical") * flipSpeed;
+    }
+    public override void FixedUpdate()
+    {
+        base.FixedUpdate();
+       AirFlip();
+       Debug.Log(player.playerRb.angularVelocity);
+    }
+
+    private void AirFlip()
+    {   
+        float sideMove = Input.GetAxisRaw("Horizontal") * player.flipSpeed;
+        float verticalMove = Input.GetAxisRaw("Vertical") * player.flipSpeed;
         if(sideMove != 0 || verticalMove != 0)
         {
-            player.transform.Rotate(player.transform.forward * -sideMove ,Space.World);
-            player.transform.Rotate(player.transform.right * verticalMove, Space.World);
-        }
-       
+          
+            var eulerAngleVelocity = new Vector3(verticalMove,0, -sideMove);
+            Quaternion deltaRotation = Quaternion.Euler(eulerAngleVelocity * Time.fixedDeltaTime);
+            player.playerRb.MoveRotation(player.playerRb.rotation * deltaRotation);
+
+            //player.playerRb.angularVelocity = new Vector3 (verticalMove, player.playerRb.angularVelocity.y, -sideMove);
+            // player.transform.Rotate(player.transform.forward * -sideMove ,Space.World);
+            // player.transform.Rotate(player.transform.right * verticalMove, Space.World);
+        } 
     }
+    
     public override void OnTriggerEnter(Collider col)
     {
         base.OnTriggerEnter(col);  

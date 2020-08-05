@@ -16,7 +16,12 @@ public class PlayerShoots : State
         base.OnEnterState();
         player.playerRb.isKinematic = false;
         //quick fix to reenter from airborne state
-        player.playerRb.AddForce(player.movingDirection * (player.shootSpeed*player.multiplierSpeed),ForceMode.Impulse);
+        
+        //player.playerRb.AddForce(player.movingDirection * (player.shootSpeed*player.multiplierSpeed),ForceMode.Impulse);
+        if(player.movingDirection != Vector3.zero)
+        {
+            player.playerRb.velocity = player.movingDirection * player.shootSpeed * player.multiplierSpeed;
+        }
         //timer used to delay the player control at start of state entering
         delayTimer=0;
         //reset the moving direction to zero after the first shootout
@@ -66,39 +71,43 @@ public class PlayerShoots : State
     }
     bool isGrinding = false;
     Vector3 grindPartyPos;
+    
     public override void OnCollisionEnter(Collision coll)
-    {
-        if(isGrinding)
-        {
-            ContactPoint contact = coll.contacts[0];
-            player.ps.transform.position = contact.point;
-        }
+    {   
+        //test for grinding mechanic
+        // if(isGrinding)
+        // {
+        //     ContactPoint contact = coll.contacts[0];
+        //     player.ps.transform.position = contact.point;
+        // }
+        base.OnCollisionEnter(coll);
+        
     }
    
     public override void OnTriggerStay(Collider col)
     {
         base.OnTriggerStay(col);
-        if(!isGrinding)
-        {
-            isGrinding = true;
-            grindPartyPos = col.transform.position;
+        // if(!isGrinding)
+        // {
+        //     isGrinding = true;
+        //     grindPartyPos = col.transform.position;
            
-        }
-        player.playerRb.angularDrag = 8f;
+        // }
+        //player.playerRb.angularDrag = 8f;
 
-        GrindRail grindRail = col.GetComponentInParent<GrindRail>();
-        if(grindRail)
-        {
-            player.ps.Emit(10);
-        }
+        // GrindRail grindRail = col.GetComponentInParent<GrindRail>();
+        // if(grindRail)
+        // {
+        //     player.ps.Emit(10);
+        // }
 
     }
     public override void OnTriggerExit(Collider col)
     {
         base.OnTriggerExit(col);
-        isGrinding = false;
-        player.playerRb.angularDrag= 0.05f;
-        var emissionModule = player.ps.emission;
-        emissionModule.rateOverDistance = 0;
+        // isGrinding = false;
+        // player.playerRb.angularDrag= 0.05f;
+        // var emissionModule = player.ps.emission;
+        // emissionModule.rateOverDistance = 0;
     }
 }
