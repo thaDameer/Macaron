@@ -48,16 +48,45 @@ public class GameManager : Actor
 
         levelHandler = GameObject.Find("LevelHandler").GetComponent<StageHandler>(); 
         if(levelHandler) {SetupGame();}
-        
     } 
+    public bool gamePaused = false;
+   
+    public override void Update() 
+    {
+        base.Update();
+        if(Input.GetKeyDown(KeyCode.Escape) && !gamePaused)
+        { 
+            gamePaused = true;
+            PauseGame(gamePaused);
+            return;
+        } else if(Input.GetKeyDown(KeyCode.Escape) && gamePaused)
+        {
+            gamePaused = false;
+            PauseGame(gamePaused);
+            return;;
+        }
+    }
+     private void PauseGame(bool isPaused)
+    {
+        if(isPaused)
+        {
+            Time.timeScale = 0;
+            uiManager.pauseScreen.Show();
+            return;
+        }else
+        {
+            Time.timeScale = 1;
+            uiManager.pauseScreen.Hide();
+            return;
+        }
+    }
+
     void SetupGame()
     {
         
         if(levelHandler)
         {
-            levelHandler.Init();
-            Debug.Log(levelHandler.amountOfBalls);
-            
+            levelHandler.Init();           
             sGamePlaying.OnEnterState();
             lifeCount = levelHandler.amountOfBalls;
             uiManager.lifeCounter.SetupHearts(lifeCount);
@@ -66,7 +95,6 @@ public class GameManager : Actor
 
     public void CurrentBallDied()
     {
-        Debug.Log(lifeCount);
         lifeCount--;
         uiManager.lifeCounter.LifeLost();
         if(lifeCount <= 0)

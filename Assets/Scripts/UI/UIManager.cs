@@ -7,4 +7,5 @@ public class UIManager : MonoBehaviour
     public WinScreen winScreen;
     public LifeCounterScreen lifeCounter;
     public LostScreen lostScreen;
+    public PauseScreen pauseScreen;
 }

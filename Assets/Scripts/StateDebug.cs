@@ -13,7 +13,6 @@ public class StateDebug : MonoBehaviour
     private void Update()
     {
         bool ctrlDown = Input.GetKey(KeyCode.RightShift);
-        Debug.Log(ctrlDown);
         if(ctrlDown && Input.GetKeyDown(KeyCode.Escape))
         {
             Debug.Log("ok");

@@ -40,8 +40,6 @@ public class Bumper : MonoBehaviour
         //Start party effect
         timer = 0;
         StartCoroutine(BumpParty_CO());
-        animator.SetTrigger("Bump");
-        party.SetActive(true);
         var dir = Vector3.Reflect(p.playerRb.velocity.normalized,collisionNormal);
         Debug.Log("out direction "+ dir);
         dir.y = collisionNormal.y;
@@ -61,6 +59,8 @@ public class Bumper : MonoBehaviour
     float timer;
     private IEnumerator BumpParty_CO()
     {
+        animator.SetTrigger("Bump");
+        party.SetActive(true);
         while(timer < 0.5)
         {
             timer += Time.deltaTime;

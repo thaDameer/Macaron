@@ -10,7 +10,6 @@ public class Cuby : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) 
     {
-        Debug.Log(other.gameObject.name);
         var player = other.GetComponentInParent<Player>();
         if(player && !isSmashed)
         {

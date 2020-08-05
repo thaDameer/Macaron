@@ -78,8 +78,8 @@ public class CameraManager : MonoBehaviour
         Vector3 fromPos = transform.position;
         while(timer<duration)
         {
-            
-            transform.position = Vector3.Lerp(fromPos, startPos, (timer/duration));
+            startPos.y = offset.y;
+            transform.position = Vector3.Lerp(fromPos, offset, (timer/duration));
             timer+=Time.deltaTime;
             yield return null;
         }

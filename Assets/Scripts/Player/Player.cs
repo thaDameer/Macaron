@@ -8,7 +8,8 @@ public class Player : Actor
    public bool isAlive = false;
    [SerializeField]
    public float pathPosition;
-
+   //EFFECTS
+   public ParticleSystem party;
    public Rigidbody playerRb;
    public GameObject ballObject;
    public GameObject aimingObject;
@@ -18,6 +19,7 @@ public class Player : Actor
    public float shootSpeed = 3f;
    [HideInInspector]
    public float multiplierSpeed;
+   public float flipSpeed = 8;
    public LayerMask playerLayer;
    public LayerMask groundLayer;
    public float aimRadius = 10;
@@ -69,16 +71,23 @@ public class Player : Actor
    }
    
    public bool IsPlayerGrounded()
-   {
-      Collider[] collider = Physics.OverlapSphere(transform.position,3, groundLayer);
-      if(collider.Length > 0)
+   {  
+      if(Physics.Raycast(transform.position,-transform.up,3,groundLayer))
       {
          return true;
-      }
-      else
+      }else
       {
          return false;
-      } 
+      }
+      // Collider[] collider = Physics.OverlapSphere(transform.position,3, groundLayer);
+      // if(collider.Length > 0)
+      // {
+      //    return true;
+      // }
+      // else
+      // {
+      //    return false;
+      // } 
    }
    private void OnTriggerEnter(Collider other) 
    {

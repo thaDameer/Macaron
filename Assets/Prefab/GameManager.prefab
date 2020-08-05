@@ -669,11 +669,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e76f7dbfa7b8e2148b51e72c101fecaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  camMode: 0
   cameraSmoothSpeed: 3
   mainCamera: {fileID: 410285257431640044}
   offset: {x: 0, y: 40, z: -20}
   currentFollowObject: {fileID: 0}
   shakeTime: 0.2
+  duration: 1
   frequency: 25
   maxTranslationShake: {x: 0.5, y: 0.5, z: 0.5}
   maxAngularShake: {x: 0, y: 2, z: 2}
@@ -787,8 +789,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 48076934057405786}
   - {fileID: 5723337681338418268}
+  - {fileID: 48076934057405786}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -840,7 +842,7 @@ Transform:
   - {fileID: 410285258714684034}
   - {fileID: 410285258605958727}
   m_Father: {fileID: 828588887742372286}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1587415293884006927
 GameObject:
@@ -1089,7 +1091,7 @@ Transform:
   - {fileID: 3251212031121960522}
   - {fileID: 7302549743597239055}
   m_Father: {fileID: 828588887742372286}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2974624142623015654
 GameObject:
@@ -1625,6 +1627,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   winScreen: {fileID: 1766496560699314505}
   lifeCounter: {fileID: 6566665879456555168}
+  lostScreen: {fileID: 0}
 --- !u!1 &9220098430079359387
 GameObject:
   m_ObjectHideFlags: 0
