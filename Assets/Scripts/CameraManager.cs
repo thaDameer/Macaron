@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public enum CameraMode
 {
@@ -32,6 +33,7 @@ public class CameraManager : MonoBehaviour
     {
         if(currentFollowObject == null) return; 
         if(!isFollowing)return;
+        
         switch(camMode)
         {
             case CameraMode.NONE:
@@ -85,43 +87,18 @@ public class CameraManager : MonoBehaviour
         }
         GameManager.instance.sGamePlaying.OnEnterState();
     }
-
-    [SerializeField]
-    float frequency = 25;
-    float seed; 
-    [SerializeField]
-    Vector3 maxTranslationShake = Vector3.one * 0.5f;
-    [SerializeField]
-    Vector3 maxAngularShake = Vector3.one * 2;
-    [SerializeField]
-    float recoverySpeed = 1.5f;
-    float trauma = 1;
-    public IEnumerator ShootCameraShake()
+    public Timer shakeTimer;
+    public float shakeDuration = 1.2f;
+    public float shakeStrength = 1.5f;
+    public int vibrato = 1;
+    public float randomness = 10;
+    public bool fadeOut = true; 
+    public void CameraShake()
     {
-        seed = Random.value;
-        shakeCounter = shakeTime;
+        shakeTimer = new Timer(shakeDuration);
+        shakeTimer.StartTimer();
+        mainCamera.DOShakeRotation(shakeTimer.elapsedPercent,shakeStrength,vibrato,randomness,fadeOut);
+        //mainCamera.DOShakePosition(shakeTimer.elapsedPercent,shakeStrength,vibrato,randomness, fadeOut);
         isFollowing = true;
-        while(shakeCounter > 0)
-        {
-            shakeCounter -= Time.deltaTime;
-            //mainCamera.transform.localPosition = new Vector2(Random.Range(-1,1),Random.Range(-1,1)) * 0.3f;
-            mainCamera.transform.localPosition = new Vector3(
-                maxTranslationShake.x * (Mathf.PerlinNoise(seed,Time.time * frequency) * 2-1),
-                maxTranslationShake.y * (Mathf.PerlinNoise(seed +1, Time.time * frequency) * 2-1),
-                maxTranslationShake.z * (Mathf.PerlinNoise(seed + 2, Time.time * frequency) * 2-1) *trauma);
-            
-            // mainCamera.transform.localRotation = Quaternion.Euler(new Vector3(
-            //     60,
-            //     maxAngularShake.y * (Mathf.PerlinNoise(seed+4, Time.time * frequency) * 2-1),
-            //     maxAngularShake.z * (Mathf.PerlinNoise(seed+5, Time.time * frequency) * 2-1)) * trauma);
-
-                trauma = Mathf.Clamp01(trauma - recoverySpeed * Time.deltaTime);
-
-            //     Debug.Log(trauma);
-
-            yield return new WaitForEndOfFrame();
-        }
-        //mainCamera.transform.position = Vector3.zero;
     }
-    
 }

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
 
 public class Player : Actor
 {
@@ -24,6 +24,7 @@ public class Player : Actor
    public LayerMask groundLayer;
    public float aimRadius = 10;
    public ParticleSystem ps;
+   
    
    //States 
    public PlayerAiming sPlayerAiming{get; protected set;}
@@ -69,10 +70,25 @@ public class Player : Actor
       aimingObject.SetActive(isVisible);
       mouseDownSprite.SetActive(isVisible);
    }
-   
+   public float groundCheckDist = 3;
+   private void OnDrawGizmos() 
+   {
+      Debug.DrawRay(transform.position, -transform.up,Color.cyan,groundCheckDist);   
+   }
+   public bool HasContactWithGround()
+   {
+      Collider[] colliders = Physics.OverlapSphere(transform.position,4, groundLayer);
+      if(colliders.Length > 0)
+      {
+         return true;
+      }else
+      {
+         return false;
+      }
+   }
    public bool IsPlayerGrounded()
    {  
-      if(Physics.Raycast(transform.position,-transform.up,3,groundLayer))
+      if(Physics.Raycast(transform.position,-transform.up,groundCheckDist,groundLayer))
       {
          return true;
       }else

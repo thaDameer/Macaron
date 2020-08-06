@@ -9,7 +9,12 @@ public class StateDebug : MonoBehaviour
     public GameObject container;
     string debugText;
     bool isActive = true;
-
+    private void Start() {
+        #if !UNITY_EDITOR
+        container.SetActive(false);
+        #endif        
+    }
+#if UNITY_EDITOR
     private void Update()
     {
         bool ctrlDown = Input.GetKey(KeyCode.RightShift);
@@ -39,4 +44,5 @@ public class StateDebug : MonoBehaviour
         currentLevel.text =  "Level: "+GameManager.instance.levelHandler.levelId.ToString();
         
     }
+#endif
 }

@@ -15,7 +15,7 @@ public class PlayerShoots : State
     {
         base.OnEnterState();
         player.playerRb.isKinematic = false;
-        //quick fix to reenter from airborne state
+        player.playerRb.angularDrag = 0.05f;
         
         //player.playerRb.AddForce(player.movingDirection * (player.shootSpeed*player.multiplierSpeed),ForceMode.Impulse);
         if(player.movingDirection != Vector3.zero)
@@ -40,7 +40,7 @@ public class PlayerShoots : State
         float xMovement = player.movementInput.x != 0 ? player.movementInput.x * player.movementSpeed: 0;
         
         //Only able to control if vMagnitude is above 14 
-        
+        if(!player.IsPlayerGrounded())return; 
         if(player.playerRb.velocity.magnitude > 14)
         {
             Vector3 movingDir = new Vector3(xMovement,player.playerRb.velocity.y,player.playerRb.velocity.z);
@@ -62,10 +62,13 @@ public class PlayerShoots : State
                 player.sPlayerDead.OnEnterState();
             }
         }
-        if(!player.IsPlayerGrounded())
+        if(player.HasContactWithGround())
+        {
+            return;
+        } else if(!player.IsPlayerGrounded())
         {
             player.sPlayerAirborne.OnEnterState();
-        } 
+        }
 
         
     }

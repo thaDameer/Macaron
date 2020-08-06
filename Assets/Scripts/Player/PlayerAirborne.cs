@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using States;
+using System;
 //using PathCreation;
 
 public class PlayerAirborne : State
 {
     Player player;
+    Quaternion startRotation;
+    protected float trickScore;
     public PlayerAirborne(Player actor) : base(actor)
     {
         player = actor;
@@ -15,6 +18,7 @@ public class PlayerAirborne : State
     public override void OnEnterState()
     {
         base.OnEnterState();
+        startRotation = player.transform.rotation;
     }
     public override void OnExitState()
     {
@@ -26,7 +30,7 @@ public class PlayerAirborne : State
     public override void Update()
     {
         base.Update();
-        if(player.IsPlayerGrounded())
+        if(player.IsPlayerGrounded() || player.HasContactWithGround())
         {
             player.previousState.OnEnterState();
         }
@@ -35,7 +39,7 @@ public class PlayerAirborne : State
     {
         base.FixedUpdate();
        AirFlip();
-       Debug.Log(player.playerRb.angularVelocity);
+       
     }
 
     private void AirFlip()
@@ -44,16 +48,31 @@ public class PlayerAirborne : State
         float verticalMove = Input.GetAxisRaw("Vertical") * player.flipSpeed;
         if(sideMove != 0 || verticalMove != 0)
         {
-          
-            var eulerAngleVelocity = new Vector3(verticalMove,0, -sideMove);
-            Quaternion deltaRotation = Quaternion.Euler(eulerAngleVelocity * Time.fixedDeltaTime);
-            player.playerRb.MoveRotation(player.playerRb.rotation * deltaRotation);
-
-            //player.playerRb.angularVelocity = new Vector3 (verticalMove, player.playerRb.angularVelocity.y, -sideMove);
-            // player.transform.Rotate(player.transform.forward * -sideMove ,Space.World);
-            // player.transform.Rotate(player.transform.right * verticalMove, Space.World);
+            TrickScoring(sideMove, verticalMove);
+            player.playerRb.angularDrag = 10;
+            
+            Vector3 forward = player.transform.TransformDirection(Vector3.forward * sideMove * player.flipSpeed);
+            Vector3 right = player.transform.TransformDirection(Vector3.right * verticalMove * player.flipSpeed);
+            
+           
+            player.playerRb.AddTorque(Vector3.forward * -sideMove * player.flipSpeed, ForceMode.VelocityChange);
+            player.playerRb.AddTorque(Vector3.right * verticalMove * player.flipSpeed, ForceMode.VelocityChange);
+            
+            
         } 
     }
+    float currentScore;
+    float sideFlipScore;
+    float vertFlipScore;
+    void TrickScoring(float sideMove, float vericalMove)
+    {
+        sideFlipScore += Mathf.Abs(sideMove);
+        vertFlipScore += Mathf.Abs(vericalMove);
+        currentScore = sideFlipScore+vertFlipScore;
+        
+        ScoringManager.OnScoring(currentScore);
+    }
+    
     
     public override void OnTriggerEnter(Collider col)
     {
@@ -62,6 +81,7 @@ public class PlayerAirborne : State
     public override void OnCollisionEnter(Collision coll)
     {
         base.OnCollisionEnter(coll);
+        
     }
     
     public override void OnCollisionStay(Collision other) 

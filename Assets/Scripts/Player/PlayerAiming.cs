@@ -42,7 +42,8 @@ public class PlayerAiming : State
         } else if(Input.GetMouseButtonUp(0) && canShoot)
         {
             //Player shoots
-            StartStateCoroutine(GameManager.instance.cameraManager.ShootCameraShake());
+            
+            GameManager.instance.cameraManager.CameraShake();
             player.animator.SetTrigger(AnimID.scaleUp);
             player.sPlayerShoots.OnEnterState();
         }
