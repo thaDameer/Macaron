@@ -93,12 +93,26 @@ public class CameraManager : MonoBehaviour
     public int vibrato = 1;
     public float randomness = 10;
     public bool fadeOut = true; 
-    public void CameraShake()
+    public void CameraShake(ShakeType shakeType, bool startFollow = false)
     {
         shakeTimer = new Timer(shakeDuration);
         shakeTimer.StartTimer();
-        mainCamera.DOShakeRotation(shakeTimer.elapsedPercent,shakeStrength,vibrato,randomness,fadeOut);
-        //mainCamera.DOShakePosition(shakeTimer.elapsedPercent,shakeStrength,vibrato,randomness, fadeOut);
+        switch(shakeType)
+        {
+            case ShakeType.Shake:
+            mainCamera.DOShakePosition(shakeTimer.elapsedPercent,shakeStrength,vibrato,randomness, fadeOut);
+            break;
+
+            case ShakeType.ShakeRot:
+            mainCamera.DOShakeRotation(shakeTimer.elapsedPercent,shakeStrength,vibrato,randomness,fadeOut);
+            break;
+        }
         isFollowing = true;
     }
+
+}
+public enum ShakeType
+{
+    Shake,
+    ShakeRot
 }

@@ -43,7 +43,7 @@ public class PlayerAiming : State
         {
             //Player shoots
             
-            GameManager.instance.cameraManager.CameraShake();
+            GameManager.instance.cameraManager.CameraShake(ShakeType.ShakeRot,true);
             player.animator.SetTrigger(AnimID.scaleUp);
             player.sPlayerShoots.OnEnterState();
         }

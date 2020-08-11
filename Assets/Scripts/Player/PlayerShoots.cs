@@ -53,15 +53,19 @@ public class PlayerShoots : State
     public override void Update()
     {
         base.Update();
+        if(player.transform.position.z < GameManager.instance.levelHandler.startPosition.position.z)
+        {
+            player.sPlayerDead.OnEnterState();
+        }
         delayTimer+=Time.deltaTime;
         
-        if(delayTimer > 1)
-        {
+        // if(delayTimer > 1)
+        // {
             if(player.playerRb.velocity.magnitude < 2 && !GameManager.instance.levelHandler.isLevelFinished)
             {
                 player.sPlayerDead.OnEnterState();
             }
-        }
+        // }
         if(player.HasContactWithGround())
         {
             return;

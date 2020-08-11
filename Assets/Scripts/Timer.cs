@@ -11,32 +11,42 @@ public struct Timer
     }
     private float duration;
     float timer;
-    public float elapsedTime 
+    public float elapsedTime
+    {
+        get{return timer;}
+    }
+    float ElapsedTime 
     {
         get 
         {
-            Update();    
+            Update();   
             return timer;
         } 
     }
-   public float remainingTime => duration - elapsedTime; 
+   public float remainingTime => duration - ElapsedTime; 
 
    
-    public bool isTimerElapsed => elapsedTime >= duration;
+    public bool isTimerElapsed => ElapsedTime >= duration;
     public float elapsedPercent
     {
         get
         {
-            return Mathf.Clamp01(elapsedTime/elapsedTime);
+            return Mathf.Clamp01(elapsedTime/duration);
         }
     }
 
     bool isRunning;
-    public void StartTimer()
+    public void StartTimer(bool reset = true)
     {
+        if(reset)
+        {
+            isRunning = false;
+            timer = 0;
+        }
         isRunning = true;
         Update();
     }
+    
     private void Update() 
     {
         if(isRunning)

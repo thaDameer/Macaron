@@ -13,9 +13,8 @@ public class Cuby : MonoBehaviour
         var player = other.GetComponentInParent<Player>();
         if(player && !isSmashed)
         {
-
-            Debug.Log(player.playerRb.velocity.magnitude);
-            player.playerRb.AddForce(Vector3.forward * 200,ForceMode.Impulse);
+            var dir = (transform.position - player.transform.position).normalized; 
+            player.playerRb.AddForce(dir * 200,ForceMode.Impulse);
             for (int i = 0; i < rigidbodies.Length; i++)
             {
                 rigidbodies[i].isKinematic = false;

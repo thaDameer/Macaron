@@ -9,6 +9,7 @@ public class GameManager : Actor
 #region Managers and Handlers
     //controls the main camera and what camera mode it should be in
     public CameraManager cameraManager;
+    public EffectsManager effectsManager;
     //keeps track of levelID and how many tries each level has
     public StageHandler levelHandler;
     //controls everything UI
@@ -21,9 +22,10 @@ public class GameManager : Actor
 #region  Game Manager States
     public GameWon sGameWon{get; protected set;}
     public GameLost sGameLost{get; protected set;}
-    public GamePaused sGamePaused{get; protected set;}
+    public GameMainMenu sGamePaused{get; protected set;}
     public GamePlaying sGamePlaying{get; protected set;}
     public GameMissedShot sGameMissedShot{get; protected set;}
+    public GameMainMenu sGameMenu {get; protected set;}
 #endregion
     private int currentLevel
     {
@@ -31,6 +33,7 @@ public class GameManager : Actor
         set{currentLevel = value;}
     }
     private int lifeCount;
+    public bool isMainMenu = false;
     
 
     private void Awake()
@@ -41,13 +44,23 @@ public class GameManager : Actor
         }
         //Set game manager states
         sGameLost = new GameLost(this);
-        sGamePaused = new GamePaused(this);
+        sGameMenu = new GameMainMenu(this);
         sGamePlaying = new GamePlaying(this);
         sGameWon = new GameWon(this);
         sGameMissedShot = new GameMissedShot(this);
 
-        levelHandler = GameObject.Find("LevelHandler").GetComponent<StageHandler>(); 
-        if(levelHandler) {SetupGame();}
+        //check and see if its main menu
+        if(isMainMenu)
+        {
+            //do something
+            sGameMenu.OnEnterState();
+        }
+        else
+        {
+            //else look for the level handler for the gameplay stages
+            levelHandler = GameObject.Find("LevelHandler").GetComponent<StageHandler>(); 
+            if(levelHandler) {SetupGame();} 
+        } 
     } 
     public bool gamePaused = false;
    

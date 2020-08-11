@@ -9,67 +9,50 @@ public class Bumper : MonoBehaviour
     public float maxForce = 1000;
     bool canBump = true;
     public GameObject party;
+    public Timer recoveryTimer = new Timer(0.09f);
     
     private void OnTriggerEnter(Collider other) 
-    {
-        // Debug.Log(other.gameObject.name);
-        // Player player = other.GetComponentInParent<Player>();
-        // if(player && canBump)
-        // {
-        //     animator.SetTrigger("Bump");
-        //     var dir = (transform.position - player.transform.position).normalized;
-        //     var reflectDir = Vector3.Reflect(dir, Vector3.up);
-        //     //player.playerRb.AddForce(-dir * bumpForce,ForceMode.Impulse);
-        //     player.playerRb.velocity = reflectDir * bumpForce;
-        //     canBump = false;
-        // }    
-    }
-    
-    private void OnCollisionEnter(Collision other) 
     {
         var player = other.gameObject.GetComponentInParent<Player>();
         if(player && canBump)
         {
-            Bounce(other.contacts[0].normal,player);
+            var bumpDir = (player.transform.position - transform.position).normalized;
+            Bounce(bumpDir, player);
             canBump = false;
-        }   
+        }
     }
-
+    private void Update() 
+    {
+        if(!canBump)
+        {
+           if(recoveryTimer.isTimerElapsed)
+           {    
+               
+                canBump = true;
+           }
+        }    
+    }
     private void Bounce (Vector3 collisionNormal, Player p)
     {
         //Start party effect
-        timer = 0;
-        StartCoroutine(BumpParty_CO());
+        party.SetActive(false);
+        GameManager.instance.cameraManager.CameraShake(ShakeType.Shake);
         var dir = Vector3.Reflect(p.playerRb.velocity.normalized,collisionNormal);
-        Debug.Log("out direction "+ dir);
-        dir.y = collisionNormal.y;
+        dir.y = 0;
+        //dir.y = collisionNormal.y;
      
-        float maxForce = Mathf.Max(p.playerRb.velocity.magnitude * 2, bumpForce);
-        maxForce = Mathf.Clamp(maxForce,bumpForce,maxForce);
+        var relativeForce = Mathf.Max(p.playerRb.velocity.magnitude * 2, bumpForce); 
+        maxForce = Mathf.Clamp(maxForce,bumpForce,relativeForce);
+        Debug.Log(maxForce);
         //reset player rb
         p.playerRb.velocity = Vector3.zero;
         p.playerRb.angularVelocity =Vector3.zero;
-        //Debug.Break();
-        //p.playerRb.AddForce(dir * maxForce,ForceMode.Impulse);
-        p.playerRb.velocity = dir * maxForce;
+        Debug.Log(dir);
 
-        Debug.Log("player velocity "+ p.playerRb.velocity.magnitude);
-        Debug.Log("player  angVelocity"+ p.playerRb.angularVelocity);
-    }
-    float timer;
-    private IEnumerator BumpParty_CO()
-    {
+        p.playerRb.velocity = dir * maxForce;
         animator.SetTrigger("Bump");
         party.SetActive(true);
-        while(timer < 0.5)
-        {
-            timer += Time.deltaTime;
-            yield return new WaitForEndOfFrame();
-        }
-        party.SetActive(false);
-    }
-    public void ResetBump_AE()
-    {
-        canBump = true;
+        //start the recovery timer
+        recoveryTimer.StartTimer();
     }
 }

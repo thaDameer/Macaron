@@ -18,6 +18,7 @@ public class PlayerDead : State
         player.ballObject.layer = 0;
         counter = delayTime;
         player.isAlive = false;
+        ScoringManager.OnHideScore();
         StartStateCoroutine(DelayDeath());
     }
     IEnumerator DelayDeath()

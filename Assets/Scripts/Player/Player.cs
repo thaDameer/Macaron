@@ -9,7 +9,7 @@ public class Player : Actor
    [SerializeField]
    public float pathPosition;
    //EFFECTS
-   public ParticleSystem party;
+   public MeshRenderer ball;
    public Rigidbody playerRb;
    public GameObject ballObject;
    public GameObject aimingObject;
@@ -71,13 +71,20 @@ public class Player : Actor
       mouseDownSprite.SetActive(isVisible);
    }
    public float groundCheckDist = 3;
+   Vector3 sphereCheckPos;
    private void OnDrawGizmos() 
    {
-      Debug.DrawRay(transform.position, -transform.up,Color.cyan,groundCheckDist);   
+      Debug.DrawRay(sphereCheckPos, -transform.up,Color.cyan,groundCheckDist);  
+      Gizmos.color = new Color(1,0,0,0.5f);
+      
+      Gizmos.DrawSphere(transform.position,2);
+
    }
    public bool HasContactWithGround()
    {
-      Collider[] colliders = Physics.OverlapSphere(transform.position,4, groundLayer);
+      sphereCheckPos = transform.position;
+      sphereCheckPos.y = transform.position.y + 0.5f;
+      Collider[] colliders = Physics.OverlapSphere(sphereCheckPos,3, groundLayer);
       if(colliders.Length > 0)
       {
          return true;
@@ -95,16 +102,8 @@ public class Player : Actor
       {
          return false;
       }
-      // Collider[] collider = Physics.OverlapSphere(transform.position,3, groundLayer);
-      // if(collider.Length > 0)
-      // {
-      //    return true;
-      // }
-      // else
-      // {
-      //    return false;
-      // } 
    }
+   
    private void OnTriggerEnter(Collider other) 
    {
       var deadzone = other.GetComponentInParent<DeadZone>();
