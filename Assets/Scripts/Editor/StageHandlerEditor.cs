@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(StageHandler))]
+[CustomEditor(typeof(SceneHandler))]
     public class StageHandlerEditor : Editor 
     {
         public override void OnInspectorGUI() 
         {
 
-            var levelHandler = (StageHandler)target;
+            var levelHandler = (SceneHandler)target;
             
             GUILayout.BeginHorizontal();
             if(GUILayout.Button("Create startpos",GUILayout.Width(100),GUILayout.Height(50)))

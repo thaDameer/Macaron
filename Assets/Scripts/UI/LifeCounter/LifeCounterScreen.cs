@@ -16,7 +16,7 @@ public class LifeCounterScreen : UIBase
     }
     private void Start() 
     {
-        if(GameManager.instance.levelHandler)
+        if(GameManager.instance.sceneHandler)
         {
             Show();
         }else

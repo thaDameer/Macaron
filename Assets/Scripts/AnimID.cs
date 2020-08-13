@@ -18,7 +18,10 @@ public static class AnimID
         pulse = StringToHash("pulse"),
         landing = StringToHash("landing"),
         idle = StringToHash("idle"),
-        stretch = StringToHash("stretch");
+        stretch = StringToHash("stretch"),
+        fadeIn = StringToHash("fadeIn"),
+        fadeOut = StringToHash("fadeOut"),
+        closed = StringToHash("closed");
 
    
 }

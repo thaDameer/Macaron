@@ -13,7 +13,7 @@ public class GamePlaying : State
     public override void OnEnterState()
     {
         base.OnEnterState();
-        gm.levelHandler.SpawnANewBall();
+        gm.sceneHandler.SpawnANewBall();
     }
     public override void OnExitState()
     {

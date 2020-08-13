@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using UnityEngine.EventSystems;
+using SceneLoading;
 
 public class LevelIcon : MonoBehaviour, ISelectHandler,IDeselectHandler, IPointerEnterHandler 
 {
@@ -15,7 +16,9 @@ public class LevelIcon : MonoBehaviour, ISelectHandler,IDeselectHandler, IPointe
     private Color startColor;
     public Color pressedColor;
     public RectTransform bannerIcon;
+    
     public Text levelText;
+    public int levelID;
     private void Start() {
         
         startColor = levelImage.color;
@@ -25,14 +28,14 @@ public class LevelIcon : MonoBehaviour, ISelectHandler,IDeselectHandler, IPointe
     
     public void PressButton()
     {
-        iconTimer.StartTimer();
-        levelImage.DOColor(pressedColor, iconTimer.elapsedPercent).OnComplete(ResetButton);
-        
+        levelImage.DOColor(pressedColor, 0.2f).OnComplete(ResetButton);
+        LoadManager.OnLoadNewScene(levelID.ToString(),LoadMode.Delay);
     }
 
-    public void SetLevelName(string levelname)
+    public void SetLevelName(int level)
     {
-        levelText.text = levelname;
+        levelID = level;
+        levelText.text = levelID.ToString();
     }
 
     private void ResetButton()
@@ -40,27 +43,18 @@ public class LevelIcon : MonoBehaviour, ISelectHandler,IDeselectHandler, IPointe
         levelImage.color = startColor;
         levelImage.sprite = buttonSpriteS;
     }
-    private Timer scaleTimer = new Timer(0.1f);
+    float tweenTime = 0.3f;
     Tweener bannerTween;
     Tweener selectionTween;
     public void OnSelect(BaseEventData eventData)
     {
         Debug.Log("select");
         bannerIcon.gameObject.SetActive(true);
-        scaleTimer.StartTimer();
         float scaleSize = 0.2f;
-        Debug.Log(scaleTimer.elapsedPercent);
+        
         Vector2 endScale = new Vector2(rectTransform.localScale.x + scaleSize, rectTransform.localScale.y + scaleSize);
-        selectionTween = levelImage.rectTransform.DOScale(endScale,scaleTimer.elapsedPercent).OnComplete(DebugTimer);
-        bannerTween = bannerIcon.DOScale(Vector3.one,scaleTimer.elapsedPercent).SetEase(Ease.InCubic);
-    }
-    void DebugTimer()
-    {
-        Debug.Log(scaleTimer.elapsedPercent);
-    }
-    void ReturnToStartScale()
-    {
-         //
+        selectionTween = levelImage.rectTransform.DOScale(endScale,tweenTime);
+        bannerTween = bannerIcon.DOScale(Vector3.one,tweenTime).SetEase(Ease.InCubic);
     }
 
     public void OnPointerEnter(PointerEventData eventData)

@@ -24,7 +24,7 @@ public class GameLost : State
         base.Update();
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            gm.sceneHandler.RestartScene();
+            gm.loadManager.RestartScene();
         }
     }
 }

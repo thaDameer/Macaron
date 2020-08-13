@@ -27942,6 +27942,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CAMERA_MODE: 2
+  isMenuScene: 0
   deadzoneParent: {fileID: 0}
   startPosition: {fileID: 317257035}
   goalPosition: {fileID: 1694029139}

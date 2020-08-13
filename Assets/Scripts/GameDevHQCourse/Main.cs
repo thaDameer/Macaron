@@ -34,39 +34,49 @@ public class Main : MonoBehaviour
         }));
         //Add a existing void function as an action
         StartCoroutine(MyRoutine(DisplayText));
-            timer.StartTimer();
     }
 
     // Update is called once per frame
+    Tweener tweener;
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Space))
         {
             var randomPos = new Vector3(Random.Range(-5,5),Random.Range(-5,5), Random.Range(-5,5));
+            timer.StartTimer();
+            Debug.Log(timer.elapsedTime);
 
-            obj.DOMove(randomPos,timer.elapsedPercent);
+            tweener = obj.DOMove(randomPos,1f);
             if(onTeleport != null)
             {
-                if(!timer.isTimerElapsed)
-                {
-                    var pos = new Vector3(Random.Range(-5,5),Random.Range(-5,5),Random.Range(-2,2));
-                    onTeleport(pos);
-                    
-                }
+                // if(!timer.isTimerElapsed)
+                // {
+                //     var pos = new Vector3(Random.Range(-5,5),Random.Range(-5,5),Random.Range(-2,2));
+                //     onTeleport(pos);
+                //     tweener.Kill();
+                // }
 
             }
         }
-        if(timer.isTimerElapsed)
+        if(!timer.isTimerElapsed)
         {
-            Debug.Log("TIME STOP");
+            Debug.Log(timer.elapsedPercent);
         }else
         {
-        timeDebug += Time.deltaTime;
-        Debug.Log(timer.elapsedTime);
-        Debug.Log(timer.elapsedPercent);
-        
+            tweener.Kill();
 
         }
+        // if(timer.isTimerElapsed)
+        // {
+        //     Debug.Log("TIME STOP");
+        // }else
+        // {
+        // timeDebug += Time.deltaTime;
+        // Debug.Log(timer.elapsedTime);
+        // Debug.Log(timer.elapsedPercent);
+        
+
+        // }
     }
         IEnumerator MyRoutine(Action onComplete)
         {

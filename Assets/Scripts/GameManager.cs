@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using SceneLoading;
 
 public class GameManager : Actor
 {
@@ -11,11 +11,11 @@ public class GameManager : Actor
     public CameraManager cameraManager;
     public EffectsManager effectsManager;
     //keeps track of levelID and how many tries each level has
-    public StageHandler levelHandler;
+    public SceneHandler sceneHandler;
     //controls everything UI
     public UIManager uiManager;
     //used to switch scenes
-    public SceneHandler sceneHandler;
+    public LoadManager loadManager;
 #endregion
     public Player player;
 
@@ -29,11 +29,11 @@ public class GameManager : Actor
 #endregion
     private int currentLevel
     {
-        get {return levelHandler.levelId;}
+        get {return sceneHandler.levelId;}
         set{currentLevel = value;}
     }
     private int lifeCount;
-    public bool isMainMenu = false;
+    public bool isMainMenu {get{return sceneHandler.isMenuScene;}}
     
 
     private void Awake()
@@ -50,17 +50,20 @@ public class GameManager : Actor
         sGameMissedShot = new GameMissedShot(this);
 
         //check and see if its main menu
-        if(isMainMenu)
+       
+        sceneHandler = GameObject.Find("LevelHandler").GetComponent<SceneHandler>(); 
+        
+        if(sceneHandler && !sceneHandler.isMenuScene)
+        {
+            //else look for the level handler for the gameplay stages
+            if(sceneHandler) {SetupGame();} 
+        } 
+        else
         {
             //do something
             sGameMenu.OnEnterState();
+        
         }
-        else
-        {
-            //else look for the level handler for the gameplay stages
-            levelHandler = GameObject.Find("LevelHandler").GetComponent<StageHandler>(); 
-            if(levelHandler) {SetupGame();} 
-        } 
     } 
     public bool gamePaused = false;
    
@@ -97,11 +100,11 @@ public class GameManager : Actor
     void SetupGame()
     {
         
-        if(levelHandler)
+        if(sceneHandler)
         {
-            levelHandler.Init();           
+            sceneHandler.Init();           
             sGamePlaying.OnEnterState();
-            lifeCount = levelHandler.amountOfBalls;
+            lifeCount = sceneHandler.amountOfBalls;
             uiManager.lifeCounter.SetupHearts(lifeCount);
         }
     }
@@ -125,6 +128,6 @@ public class GameManager : Actor
         int nextLevel = currentLevel;
         nextLevel++;
         string levelName = "level "+nextLevel;
-        sceneHandler.WhatSceneToLoad(levelName);
+        LoadManager.OnLoadNewScene(nextLevel.ToString(),LoadMode.Delay);
     }
 }

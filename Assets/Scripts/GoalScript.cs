@@ -10,7 +10,7 @@ public class GoalScript : MonoBehaviour
 
         if(player)
         {
-            GameManager.instance.levelHandler.LevelIsFinished();
+            GameManager.instance.sceneHandler.LevelIsFinished();
         }    
    }
 }

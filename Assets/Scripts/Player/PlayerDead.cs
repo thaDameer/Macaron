@@ -28,7 +28,10 @@ public class PlayerDead : State
             counter -= Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
-
+        if(GameManager.instance.currentState == GameManager.instance.sGameWon)
+        {
+            yield break;
+        }
         GameManager.instance.CurrentBallDied();
 
     }

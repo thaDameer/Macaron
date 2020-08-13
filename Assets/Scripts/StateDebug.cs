@@ -41,7 +41,7 @@ public class StateDebug : MonoBehaviour
         gameManagerStatus.text = GameManager.instance.currentState.ToString();
         currentState.text = GameManager.instance.player.currentState.ToString();
         previousState.text = GameManager.instance.player.previousState.ToString();
-        currentLevel.text =  "Level: "+GameManager.instance.levelHandler.levelId.ToString();
+        currentLevel.text =  "Level: "+GameManager.instance.sceneHandler.levelId.ToString();
         
     }
 #endif

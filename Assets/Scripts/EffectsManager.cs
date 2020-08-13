@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+using UnityEngine.UI;
 
 public enum Party
 {
@@ -10,6 +12,15 @@ public class EffectsManager : MonoBehaviour
 {
     Timer partyTimer =new Timer();
     public GameObject landingParty;
+    public Animator transitionAnimator;
+
+    public void FadeTransition(string animId)
+    {
+        transitionAnimator.SetTrigger(animId);
+        //end value 80
+        Vector3 endpos = new Vector3(0,0,0);
+        
+    }
     public void PlayParty(Vector3 pos, Quaternion rot, float lenght, Transform partyParent = null)
     {   
         if(partyParent)
