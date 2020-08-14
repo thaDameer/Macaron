@@ -7,7 +7,6 @@ public class PlayerShoots : State
 {
     Player player;
     float delayTimer;
-    Timer boostTimer = new Timer(1f);
     public PlayerShoots(Player actor) : base(actor)
     {
         player = actor;
@@ -16,13 +15,9 @@ public class PlayerShoots : State
     {
         base.OnEnterState();
         player.playerRb.isKinematic = false;
-        if(!player.isBoosting)
+      
         player.playerRb.angularDrag = 0.05f;
-        else
-        {
-            player.playerRb.angularDrag = 10;
-            boostTimer.StartTimer();
-        }
+        
         
         //player.playerRb.AddForce(player.movingDirection * (player.shootSpeed*player.multiplierSpeed),ForceMode.Impulse);
         if(player.movingDirection != Vector3.zero)
@@ -43,11 +38,6 @@ public class PlayerShoots : State
     public override void FixedUpdate()
     {
         base.FixedUpdate();
-        if(player.isBoosting && boostTimer.isTimerElapsed)
-        {
-            player.playerRb.angularDrag = 0.05f;
-            player.isBoosting = false;
-        }
         float xMovement = player.movementInput.x != 0 ? player.movementInput.x * player.movementSpeed: 0;
         
         //Only able to control if vMagnitude is above 14 

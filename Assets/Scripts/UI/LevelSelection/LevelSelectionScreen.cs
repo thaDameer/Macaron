@@ -27,6 +27,7 @@ public class LevelSelectionScreen : UIBase
    public List<LevelIcon> levelIcons = new List<LevelIcon>();
    public void GetChildIcons(Transform parent)
    {
+       //Get all the child objects, containing level icons
        foreach (Transform item in parent)
        {
            var icon = item.GetComponent<LevelIcon>();

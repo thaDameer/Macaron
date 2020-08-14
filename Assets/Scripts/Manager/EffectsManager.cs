@@ -14,6 +14,13 @@ public class EffectsManager : MonoBehaviour
     public GameObject landingParty;
     public Animator transitionAnimator;
 
+    private void Start() 
+    {
+        if(!GameManager.instance.isMainMenu)
+        {
+            FadeTransition("fadeOut");
+        }    
+    }
     public void FadeTransition(string animId)
     {
         transitionAnimator.SetTrigger(animId);

@@ -14,12 +14,13 @@ namespace SceneLoading
 
 public class LoadManager : MonoBehaviour
 {
-    public static Action<string,LoadMode> OnLoadNewScene;
-    public void WhatSceneToLoad(string levelIDstring, LoadMode mode)
+    public static Action<int,LoadMode> OnLoadNewScene;
+    //stores the loaded level
+    public int loadedLevel;
+    public void WhatSceneToLoad(int levelID, LoadMode mode)
     {
-        string sceneToLoad = "level "+levelIDstring;
-         var sceneName =SceneManager.GetSceneByName(levelIDstring);
-         Debug.Log(sceneName);
+        string sceneToLoad = "level "+levelID;
+        loadedLevel = levelID;
         if(mode == LoadMode.Instant)
         {
             SceneManager.LoadScene(sceneToLoad);
@@ -27,6 +28,7 @@ public class LoadManager : MonoBehaviour
         if(mode == LoadMode.Delay)
         {
             GameManager.instance.effectsManager.FadeTransition("fadeIn");
+            
             StartCoroutine(LoadSceneDelayed(sceneToLoad));
         }
     }

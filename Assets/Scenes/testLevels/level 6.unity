@@ -10619,10 +10619,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1909079827, guid: 05f767d9a2f1c3d479a49e91fda049c7, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 410285258374053716, guid: 05f767d9a2f1c3d479a49e91fda049c7, type: 3}
       propertyPath: m_Name
       value: GlobalObjects
@@ -10670,14 +10666,6 @@ PrefabInstance:
     - target: {fileID: 410285258374053719, guid: 05f767d9a2f1c3d479a49e91fda049c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 828588887609380034, guid: 05f767d9a2f1c3d479a49e91fda049c7, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -30
-      objectReference: {fileID: 0}
-    - target: {fileID: 828588888724697517, guid: 05f767d9a2f1c3d479a49e91fda049c7, type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05f767d9a2f1c3d479a49e91fda049c7, type: 3}
@@ -23118,6 +23106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CAMERA_MODE: 2
+  isMenuScene: 0
   deadzoneParent: {fileID: 985655569}
   startPosition: {fileID: 945746931}
   goalPosition: {fileID: 271371512}

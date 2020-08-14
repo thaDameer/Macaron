@@ -239,7 +239,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 828588887609380035}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 80, z: 0}
+  m_LocalPosition: {x: 0, y: 80, z: -30}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 828588888724697519}
@@ -261,7 +261,7 @@ MonoBehaviour:
   camMode: 0
   cameraSmoothSpeed: 3
   mainCamera: {fileID: 828588888724697516}
-  offset: {x: 0, y: 40, z: -20}
+  offset: {x: 0, y: 60, z: -20}
   currentFollowObject: {fileID: 0}
   shakeTime: 0.2
   duration: 2
@@ -3019,7 +3019,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8988966501758407471
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3459,7 +3459,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1657845729030039931
 RectTransform:
   m_ObjectHideFlags: 0

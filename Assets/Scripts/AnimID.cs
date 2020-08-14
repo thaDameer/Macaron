@@ -7,7 +7,7 @@ public static class AnimID
 {
     public enum AnimIDEnum
     {
-
+        fadeOut 
     }
 
     public static readonly int
