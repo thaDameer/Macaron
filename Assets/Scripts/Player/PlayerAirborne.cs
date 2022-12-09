@@ -136,6 +136,12 @@ public class PlayerAirborne : State
                 ResetCurrentScore();
                 succesfulLanding = true;
                 player.animator.SetTrigger(AnimID.landing);
+            }else
+            {
+                ScoringManager.OnHideScore();
+                var ball = player.ball.material;
+                GameManager.instance.effectsManager.FlashMaterial(ball,Color.black);
+                Debug.Log("Sloppy landing");
             }   
         } 
         

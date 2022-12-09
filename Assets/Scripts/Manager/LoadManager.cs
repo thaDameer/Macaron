@@ -14,13 +14,11 @@ namespace SceneLoading
 
 public class LoadManager : MonoBehaviour
 {
-    public static Action<int,LoadMode> OnLoadNewScene;
+    public static Action<string,LoadMode> OnLoadNewScene;
     //stores the loaded level
-    public int loadedLevel;
-    public void WhatSceneToLoad(int levelID, LoadMode mode)
+    public void StoreAndLoadLevel(string levelID, LoadMode mode)
     {
         string sceneToLoad = "level "+levelID;
-        loadedLevel = levelID;
         if(mode == LoadMode.Instant)
         {
             SceneManager.LoadScene(sceneToLoad);
@@ -32,6 +30,10 @@ public class LoadManager : MonoBehaviour
             StartCoroutine(LoadSceneDelayed(sceneToLoad));
         }
     }
+    private void StoreCurrentLevel(int levelToBeLoaded)
+    {
+
+    }
     IEnumerator LoadSceneDelayed(string scene)
     {
         //Maybe do this in a coroutine and add a faded vignette or something?
@@ -39,11 +41,11 @@ public class LoadManager : MonoBehaviour
         SceneManager.LoadScene(scene);
     }
     private void OnEnable() {
-        OnLoadNewScene += WhatSceneToLoad;
+        OnLoadNewScene += StoreAndLoadLevel;
     }
     private void OnDisable() {
 
-        OnLoadNewScene -= WhatSceneToLoad;    
+        OnLoadNewScene -= StoreAndLoadLevel;    
     }
     public void RestartScene()
     {

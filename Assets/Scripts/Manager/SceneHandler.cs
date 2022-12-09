@@ -123,4 +123,9 @@ public class SceneHandler : MonoBehaviour
     #endregion
 }
 
-
+public class LevelInfo
+{
+    public int levelId;
+    public int collected;
+    public int maxScore;
+}
